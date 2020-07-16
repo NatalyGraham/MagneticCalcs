@@ -1,29 +1,32 @@
 package UI;
 
+import UI.utilities.JComboPicker;
 import UI.utilities.JFilePicker;
+import UI.utilities.JTextFieldPicker;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JFileChooser;
 
 
-public class SettingsWindow {
+public class SettingsWindow implements ActionListener {
 
     private JFrame setWindow;
-    //private JPanel initialSettings;
     private JPanel labelSet;
     private JPanel fieldSet;
+    private JButton acceptBt;
+    private JButton declineBt;
     private final int dimX = 650;
     private final int dimY = 400;
     private String title;
-    private String defaultPathFemm = "C:\\femm42\\bin\\femm.exe";
-    private String defaultPathProject = "D:\\Projects\\MagneticProjects";
+    private final String defaultPathFemm = "C:\\femm42\\bin\\femm.exe";
+    private final String defaultPathProject = "D:\\Projects\\MagneticProjects";
 
-    private JLabel text01, text02, text03, text04, text05, text06;
 
     public SettingsWindow() {
 
-        //setWindow.setLayout(null);
         title = "Настройки";
         setWindow = new JFrame(title);
         setWindow.setSize(dimX, dimY);
@@ -34,29 +37,8 @@ public class SettingsWindow {
         setWindow.setVisible(true);
 
 
-        //initialSettings = new JPanel();
-        //initialSettings.setBorder(BorderFactory.createTitledBorder("Настройки по умолчанию"));
         labelSet = new JPanel();
-        labelSet.setLayout(new BoxLayout(labelSet, BoxLayout.Y_AXIS));
-
-        //initialSettings.setLayout(new BoxLayout(initialSettings, BoxLayout.Y_AXIS));
-
-//        labelSet = new JPanel();
-//        labelSet.setLayout(new BoxLayout(initialSettings, BoxLayout.Y_AXIS));
-
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Укажите путь к файлу femm.exe:       "));
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Дирректория проекта                 "));
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Тип магнитной задачи                 "));
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Выберите систему измерения           "));
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Частота, Гц                          "));
-        labelSet.add(new JLabel(" "));
-        labelSet.add(new JLabel("   Выерите число параллельных расчетов  "));
-        labelSet.add(new JLabel(" "));
+        //labelSet.setLayout(new BoxLayout(labelSet, BoxLayout.Y_AXIS));
 
         fieldSet = new JPanel();
         fieldSet.setLayout(new BoxLayout(fieldSet, BoxLayout.Y_AXIS));
@@ -64,15 +46,9 @@ public class SettingsWindow {
         fieldSet.add(new JLabel("              "));
         fieldSet.add(new JLabel("              "));
 
-//        JTextField femmPath = new JTextField("C:\\femm42\\bin\\femm.exe", 20);
-//        femmPath.setHorizontalAlignment(JTextField.LEFT);
-//        fieldSet.add(femmPath);
-//        fieldSet.add(femmPath);
-//
-//        fieldSet.add(new JLabel("rere    "));
 
         // Ввод пути к Femm
-        JFilePicker fpFemm = new JFilePicker("   Укажите путь к файлу femm.exe:       ",
+        JFilePicker fpFemm = new JFilePicker("   Укажите путь к файлу femm.exe:         ",
                 defaultPathFemm,
                 "Browse...");
 
@@ -84,7 +60,7 @@ public class SettingsWindow {
 
 
         // Ввод пути к проекту
-        JFilePicker fpProject = new JFilePicker("   Дирректория проекта                             ",
+        JFilePicker fpProject = new JFilePicker("   Дирректория проекта по умолчанию: ",
                 defaultPathProject,
                 "Browse...");
 
@@ -92,31 +68,48 @@ public class SettingsWindow {
         fpProject.getFileChooser().setFileSelectionMode(
                 JFileChooser.DIRECTORIES_ONLY);
 
+
+        String[] cpDim = {"mm", "m"};
+        JComboPicker cpDimention = new JComboPicker("Выберите систему измерения           ", cpDim);
+
+        String[] cpType = {"Axisymmetric", "Planar"};
+        JComboPicker cpMagType = new JComboPicker("Тип магнтной задачи                            ", cpType);
+
+        String[] cpParCalcs = {"1", "2", "3", "4", "5", "6"};
+        JComboPicker cpParallrelCalcs = new JComboPicker("Число параллельных расчетов      ", cpParCalcs);
+
+        JTextFieldPicker defaultFrequency = new JTextFieldPicker("Частота, Гц                                              ",
+                "0");
+
+
         fieldSet.add(fpFemm);
         fieldSet.add(fpProject);
+        fieldSet.add(cpDimention);
+        fieldSet.add(cpMagType);
+        fieldSet.add(cpParallrelCalcs);
+        fieldSet.add(defaultFrequency);
+
+        acceptBt = new JButton("Применить");
+        acceptBt.addActionListener(this);
+        declineBt = new JButton("Отмена");
+        declineBt.addActionListener(this);
 
 
-        //initialSettings.add(labelSet);
-        //setWindow.getContentPane().add(BorderLayout.WEST, labelSet);
+        labelSet.add(acceptBt);
+        labelSet.add(declineBt);
+
         setWindow.getContentPane().add(BorderLayout.NORTH, fieldSet);
+        setWindow.getContentPane().add(BorderLayout.SOUTH, labelSet);
 
 
     }
 
-    public void addComboBox(int posX, int posY) {
-
-        JComboBox newComboBox = new JComboBox();
-        newComboBox.setLocation(posX, posY);
-        newComboBox.setSize(130, 27);
-        newComboBox.setEditable(true);
-        newComboBox.addItem("Serif");
-        newComboBox.addItem("SansSerif");
-        newComboBox.addItem("MonoSpaced");
-        newComboBox.addItem("Dialog");
-        newComboBox.addItem("DialogInput");
-        newComboBox.addItem("Arial");
-        setWindow.add(newComboBox);
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == acceptBt)
+            //TODO: сделать сохранялку введенных параметров
+           setWindow.dispose();
+        if (e.getSource() == declineBt)
+            setWindow.dispose();
     }
-
-
 }

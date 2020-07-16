@@ -9,7 +9,7 @@ import java.awt.event.ActionListener;
 import java.io.IOException;
 
 
-public class NewProjectWindow implements ActionListener {
+public class RunProject implements ActionListener {
 
     private JFrame setWindow;
     //private JPanel initialSettings;
@@ -33,7 +33,7 @@ public class NewProjectWindow implements ActionListener {
         return defaultPathLuaScript;
     }
 
-    public NewProjectWindow() {
+    public RunProject() {
 
         //setWindow.setLayout(null);
         title = "Новый проект";
@@ -141,7 +141,8 @@ public class NewProjectWindow implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         try {
-            new RunFemm();
+            new RunFemm("C:\\femm42\\bin\\femm.exe",
+                    "-lua-script=D:\\Projects\\MagneticProjects\\somescript.lua");
         } catch (IOException ioException) {
             ioException.printStackTrace();
         } catch (InterruptedException interruptedException) {

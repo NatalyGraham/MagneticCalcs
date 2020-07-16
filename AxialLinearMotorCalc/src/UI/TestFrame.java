@@ -173,7 +173,7 @@ public class TestFrame extends JFrame {
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                JFrame.setDefaultLookAndFeelDecorated(true);
+                JFrame.setDefaultLookAndFeelDecorated(false);
                 createGUI();
             }
         });

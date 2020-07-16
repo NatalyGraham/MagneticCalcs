@@ -1,6 +1,5 @@
 package UI;
 
-import UI.utilities.MenuBar;
 import UI.utilities.StatusBar;
 
 import javax.swing.*;
@@ -29,7 +28,7 @@ public class MainWindow implements ActionListener {
         mainWindow = new JFrame(title);
         mainWindow.setSize(dimX, dimY);
         mainWindow.setLocationRelativeTo(null);
-        mainWindow.setResizable(false);
+        mainWindow.setResizable(true);
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setBackground(Color.LIGHT_GRAY);
         mainWindow.setVisible(true);
@@ -93,7 +92,7 @@ public class MainWindow implements ActionListener {
     @Override
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == newProject)
-            new NewProjectWindow();
+            new RunProject();
         if (e.getSource() == settings)
             new SettingsWindow();
     }
